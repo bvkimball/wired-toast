@@ -1,4 +1,4 @@
-import { WiredBase, customElement, property, TemplateResult, html, css } from "wired-lib/lib/wired-base"
+import { WiredBase, customElement, property, TemplateResult, html, css, query } from "wired-lib/lib/wired-base"
 import { styleMap } from "lit-html/directives/style-map"
 
 const hostEdgeStyles: any = {
@@ -46,10 +46,20 @@ const openEdgeTransforms: any = {
   "top-right": "translateX(0)",
 }
 
+const toastStacks: Map<string, Set<WiredToast>> = new Map()
+
+function getStack(location: string): Set<WiredToast> {
+  if (!toastStacks.has(location)) {
+    toastStacks.set(location, new Set())
+  }
+  return toastStacks.get(location)!
+}
+
 @customElement("wired-toast")
 export class WiredToast extends WiredBase {
   @property({ type: Boolean, reflect: true }) showing = false
-  @property({ type: String, reflect: true }) location = "bottom"
+  @property({ type: String, reflect: true }) location: string = "bottom"
+  @query("wired-card") card: any
 
   static get styles() {
     return css`
@@ -65,13 +75,16 @@ export class WiredToast extends WiredBase {
         position: fixed;
         top: 0;
         -webkit-tap-highlight-color: transparent;
+        transition-duration: 0.25s;
+        transition-property: transform;
         width: 100%;
       }
       wired-card {
         display: inline-flex;
         width: fit-content;
         background: var(--wired-toast-bg, #fff);
-        pointer-events: initial;
+        pointer-events: all;
+        cursor: pointer;
         position: relative;
         transition-duration: 0.25s;
         transition-property: opacity, transform;
@@ -85,6 +98,7 @@ export class WiredToast extends WiredBase {
     const transform = this.showing ? openEdgeTransforms[this.location] : closeEdgeTransforms[this.location]
     const position = Object.assign({}, { opacity, transform })
     Object.assign(this.style, hostEdgeStyles[this.location])
+
     return html`
       <wired-card elevation="3" style=${styleMap(position)}>
         <slot></slot>
@@ -98,6 +112,7 @@ export class WiredToast extends WiredBase {
     })
   }
   async show(duration: number = 3000) {
+    getStack(this.location).add(this)
     // Enter
     this.showing = true
     await this.wait(500)
@@ -113,6 +128,7 @@ export class WiredToast extends WiredBase {
   }
 
   close() {
+    getStack(this.location).delete(this)
     this.fireEvent("toast-closed")
   }
 }
@@ -125,11 +141,26 @@ function htmlToElement(html: string): WiredToast {
   return child as WiredToast
 }
 
+function updateStacks(location: string) {
+  Array.from(getStack(location))
+    .reverse()
+    .forEach((t, i) => (t.location.includes("bottom") ? (t.style.transform = `translateY(${-40 * i}px)`) : (t.style.transform = `translateY(${40 * i}px)`)))
+}
+
 export function showToast(text: string, duration: number = 3000, location: string = "bottom") {
   const toast: WiredToast = htmlToElement(`<wired-toast location="${location}">${text}</wired-toast>`)
   document.body.appendChild(toast)
   toast.addEventListener("toast-closed", () => {
     document.body.removeChild(toast)
+    updateStacks(location)
   })
-  setTimeout(() => toast.show(duration))
+  toast.addEventListener("click", () => {
+    toast.close()
+  })
+
+  setTimeout(() => {
+    toast.show(duration)
+    updateStacks(location)
+  })
+  return toast
 }

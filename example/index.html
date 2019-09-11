@@ -16,15 +16,20 @@
 
   <body>
     <wired-button id="toaster">Show Toast</wired-button>
+    <wired-button id="toaster2">Show Toast</wired-button>
 
     <script type="module">
       import { showToast } from "../lib/wired-toast.mjs"
       let locations = ["top", "top-right", "bottom-right", "bottom", "bottom-left", "top-left"]
       const toaster = document.getElementById("toaster")
+      const toaster2 = document.getElementById("toaster2")
       toaster.addEventListener("click", () => {
         let location = locations.shift()
         showToast(`Showing toast: ${location}`, 3000, location)
         locations.push(location)
+      })
+      toaster2.addEventListener("click", () => {
+        showToast(`Toasty!!`, 0, "bottom")
       })
     </script>
   </body>

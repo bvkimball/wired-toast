@@ -1,6 +1,6 @@
 {
   "name": "@bvkimball/wired-toast",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Hand-drawn sketchy toast - web component",
   "source": "src/wired-toast.ts",
   "main": "lib/wired-toast.js",
