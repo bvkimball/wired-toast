@@ -1,4 +1,4 @@
-![wired toast](https://rawcdn.githack.com/bvkimball/wired-toast/7598df66ad1e54cdf6aeefb083c20c2f825def06/example/wired-toast.gif)
+![wired toast](https://rawcdn.githack.com/bvkimball/wired-toast/ada8386bcb6db330fc94f90811fca4f846474105/example/wired-toast.gif)
 
 # wired-toast
 
