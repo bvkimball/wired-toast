@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <link href="//fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet" />
+    <script src="//unpkg.com/wired-elements@latest/dist/wired-elements.bundled.js"></script>
+    <script type="module" src="../lib/wired-toast.mjs"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 10px;
+        font-family: "Gloria Hallelujah", sans-serif;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <wired-button id="toaster">Show Toast</wired-button>
+
+    <script type="module">
+      import { showToast } from "../lib/wired-toast.mjs"
+      let locations = ["top", "top-right", "bottom-right", "bottom", "bottom-left", "top-left"]
+      const toaster = document.getElementById("toaster")
+      toaster.addEventListener("click", () => {
+        let location = locations.shift()
+        showToast(`Showing toast: ${location}`, 3000, location)
+        locations.push(location)
+      })
+    </script>
+  </body>
+</html>

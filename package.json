@@ -1,0 +1,39 @@
+{
+  "name": "@bvkimball/wired-toast",
+  "version": "0.0.3",
+  "description": "Hand-drawn sketchy toast - web component",
+  "source": "src/wired-toast.ts",
+  "main": "lib/wired-toast.js",
+  "module": "lib/wired-toast.mjs",
+  "types": "lib/wired-toast.d.ts",
+  "scripts": {
+    "build": "bake",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wiredjs/wired-elements.git"
+  },
+  "keywords": [
+    "toast",
+    "webcomponent",
+    "web component",
+    "rough",
+    "sketchy",
+    "hand-drawn",
+    "hand drawn",
+    "wireframe"
+  ],
+  "author": "Brian Kimball <bvkimball@gmail.com> ",
+  "license": "MIT",
+  "dependencies": {
+    "lit-html": "^1.1.2",
+    "wired-lib": "^1.0.0"
+  },
+  "devDependencies": {
+    "@niht/chef": "0.0.5",
+    "@webcomponents/webcomponentsjs": "^2.2.7",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.1"
+  }
+}
